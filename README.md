@@ -29,6 +29,19 @@ There is a [new code base](https://github.com/ibm-messaging/mq-container) for ru
 
 Run [IBM® MQ](http://www-03.ibm.com/software/products/en/ibm-mq) in a Docker container.  By default, the supplied Dockerfile runs [IBM MQ for Developers](http://www-03.ibm.com/software/products/en/ibm-mq-advanced-for-developers), but also works for IBM MQ.  The source can be found on the [ibm-messaging GitHub](http://github.com/ibm-messaging/mq-docker).  There's also a short [demo video](https://www.youtube.com/watch?v=BoomAVqk0cI) available.
 
+For a Foundational approach to messaging and integration on IBM Cloud Private we have looked at a "traditional ESB" on ICP:
+		A 4-way MQ v9.0.n Cluster
+		2 Gateway Queue Managers each an MQ cluster repository https://github.com/DAVEXACOM/MQv9ClusGatewayImg
+		2 "backend" Queue Managers each hosting a locally bound IIB v10.0.0.n node. https://github.com/DAVEXACOM/MQv9ClusIIBv10LclImg
+		All the queues are set up to drop messages into the gateways, have them cross the cluster, be serviced by IIB nodes and returned across the cluster to the gateways.
+		The Foundational approach leverages the K8s DNS service and it's naming conventions in order the cluster channels in the MQSC files can resolve.
+		The Helm release is coupled to the MQ Gateway Img build Github repository (the image is built and then the helm release driven) and leverages and approach of chart folders with chart folders inside 		chart folders. Helm works its way down.
+		The Helm release coupled to the MQ Gateway Img build relies on the MQ Clus IIB Local image (build only, no release or deploy) have been already run and it's image being on the ICP. 
+
+For ICP 3.1.1. With Microclimate you have to customize the jenkins build scripts. The process is documented in the following link.
+
+https://github.com/cloudnativedemo/icp-notes/blob/master/microclimate_notes.md
+
 # Docker Hub
 A pre-built version of this image is available on Docker Hub as [`ibmcom/mq`](https://hub.docker.com/r/ibmcom/mq/) with the following tags:
 
